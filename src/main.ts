@@ -1,3 +1,4 @@
+import { UnprocessableEntityException, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as compression from 'compression';
@@ -11,6 +12,14 @@ async function bootstrap() {
 
   app.enableVersioning();
   app.setGlobalPrefix('api');
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      exceptionFactory: (errors) => new UnprocessableEntityException(errors),
+      transform: true,
+      whitelist: true,
+    }),
+  );
 
   const config = new DocumentBuilder()
     .setTitle('Pokedex API')
