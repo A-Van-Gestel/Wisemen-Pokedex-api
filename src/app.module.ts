@@ -4,6 +4,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { PokemonDetails, PokemonsModule } from './pokemon';
+import {
+  MoveVersionGroupDetail,
+  PokemonAbility,
+  PokemonMove,
+  PokemonStat,
+  PokemonType,
+  Sprite,
+} from './pokemon/entities/sub-entities';
 
 @Module({
   imports: [
@@ -17,9 +26,18 @@ import { AppService } from './app.service';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      entities: [],
-      synchronize: true,
+      entities: [
+        PokemonDetails,
+        Sprite,
+        PokemonType,
+        PokemonMove,
+        MoveVersionGroupDetail,
+        PokemonStat,
+        PokemonAbility,
+      ],
+      synchronize: true, // Only for development, should be set to false in production
     }),
+    PokemonsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
