@@ -1,28 +1,13 @@
-import { ApiHideProperty } from '@nestjs/swagger';
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 
-import { PokemonDetails } from '../pokemon-details.entity';
+import { AbstractEntity } from '../../../shared';
 import { MoveVersionGroupDetail } from './move-version-detail.entity';
 
 @Entity({ name: 'pokemon-move' })
-export class PokemonMove {
-  @ApiHideProperty()
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class PokemonMove extends AbstractEntity<PokemonMove> {
   @Column({ type: 'text' })
-  move: string;
-
-  @ApiHideProperty()
-  @ManyToOne(() => PokemonDetails, (pokemon) => pokemon.moves)
-  pokemon: PokemonDetails;
+  move!: string;
 
   @OneToMany(() => MoveVersionGroupDetail, (detail) => detail.move)
-  version_group_details: MoveVersionGroupDetail[];
+  version_group_details!: MoveVersionGroupDetail[]; // TODO: Fix relationship seeding
 }

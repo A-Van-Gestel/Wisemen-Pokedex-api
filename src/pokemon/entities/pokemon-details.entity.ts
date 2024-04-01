@@ -1,11 +1,14 @@
 import {
   Column,
   Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   OneToOne,
-  PrimaryGeneratedColumn,
 } from 'typeorm';
 
+import { AbstractEntity } from '../../shared';
 import {
   PokemonAbility,
   PokemonMove,
@@ -15,40 +18,41 @@ import {
 } from './sub-entities';
 
 @Entity({ name: 'pokemon-details' })
-export class PokemonDetails {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class PokemonDetails extends AbstractEntity<PokemonDetails> {
   @Column({ type: 'text' })
-  name: string;
+  name!: string;
 
   @Column({ type: 'int' })
-  height: number;
+  height!: number;
 
   @Column({ type: 'int' })
-  weight: number;
+  weight!: number;
 
   @Column({ type: 'int' })
-  order: number;
+  order!: number;
 
   @Column({ type: 'text' })
-  species: string;
+  species!: string;
 
   @Column({ type: 'text' })
-  form: string;
+  form!: string;
 
-  @OneToOne(() => Sprite, (sprite) => sprite.pokemon)
-  sprites: Sprite;
+  @OneToOne(() => Sprite, { eager: true, cascade: true })
+  @JoinColumn()
+  sprites?: Sprite;
 
-  @OneToMany(() => PokemonType, (type) => type.pokemon)
-  types: PokemonType[];
+  @OneToMany(() => PokemonType, (type) => type.pokemon, { cascade: true })
+  types?: PokemonType[];
 
-  @OneToMany(() => PokemonMove, (move) => move.pokemon)
-  moves: PokemonMove[];
+  @ManyToMany(() => PokemonMove, { cascade: true })
+  @JoinTable()
+  moves?: PokemonMove[];
 
-  @OneToMany(() => PokemonStat, (stat) => stat.pokemon)
-  stats: PokemonStat[];
+  @OneToMany(() => PokemonStat, (stat) => stat.pokemon, { cascade: true })
+  stats?: PokemonStat[];
 
-  @OneToMany(() => PokemonAbility, (ability) => ability.pokemon)
-  abilities: PokemonAbility[];
+  @OneToMany(() => PokemonAbility, (ability) => ability.pokemon, {
+    cascade: true,
+  })
+  abilities?: PokemonAbility[];
 }

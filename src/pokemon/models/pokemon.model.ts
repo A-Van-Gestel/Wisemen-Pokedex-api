@@ -1,13 +1,26 @@
-import { PokemonType } from '../entities/sub-entities';
+import { ApiProperty, PickType } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
+
+import { PokemonType, Sprite } from '../entities/sub-entities';
 
 export class Pokemon {
-  id: number;
+  @ApiProperty()
+  id!: number;
 
-  name: string;
+  @ApiProperty()
+  name!: string;
 
-  sprites: {
+  @ApiProperty({ type: PickType(Sprite, ['front_default']) })
+  @Type(() => PickType(Sprite, ['front_default']))
+  sprites!: {
     front_default: string;
   };
 
-  types: PokemonType[];
+  @ApiProperty({ type: PokemonType, isArray: true })
+  @Type(() => PokemonType)
+  types!: PokemonType[];
+
+  constructor(pokemon: Partial<Pokemon>) {
+    Object.assign(this, pokemon);
+  }
 }

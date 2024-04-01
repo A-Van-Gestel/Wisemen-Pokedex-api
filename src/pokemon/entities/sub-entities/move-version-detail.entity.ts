@@ -1,23 +1,21 @@
 import { ApiHideProperty } from '@nestjs/swagger';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
+import { AbstractEntity } from '../../../shared';
 import { PokemonMove } from './pokemon-move.entity';
 
 @Entity({ name: 'move-version-group-detail' })
-export class MoveVersionGroupDetail {
-  @ApiHideProperty()
-  @PrimaryGeneratedColumn()
-  id: number;
+export class MoveVersionGroupDetail extends AbstractEntity<MoveVersionGroupDetail> {
+  @Column({ type: 'text' })
+  move_learn_method!: string;
 
   @Column({ type: 'text' })
-  move_learn_method: string;
-
-  @Column({ type: 'text' })
-  version_group: string;
+  version_group!: string;
 
   @Column({ type: 'int' })
-  level_learned_at: number;
+  level_learned_at!: number;
 
+  @ApiHideProperty()
   @ManyToOne(() => PokemonMove, (move) => move.version_group_details)
-  move: PokemonMove;
+  move?: PokemonMove;
 }
