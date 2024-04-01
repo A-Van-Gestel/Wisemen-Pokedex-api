@@ -1,7 +1,15 @@
-import { Controller, Get, Param, Version } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Controller, Param } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
+import {
+  FindOneResponse,
+  FindResponse,
+  Sorting,
+  SortingParams,
+  SortQuery,
+} from '../../shared';
 import { Pokemon, PokemonDetails } from '../entities';
+import { PokemonSortingFields } from '../enums';
 import { PokemonsService } from '../services';
 
 @ApiTags('Pokemons')
@@ -9,43 +17,25 @@ import { PokemonsService } from '../services';
 export class PokemonsController {
   constructor(private readonly pokemonService: PokemonsService) {}
 
-  @Get()
-  @ApiOperation({ summary: 'Get all pokemons' })
-  @ApiResponse({
-    status: 200,
-    description: 'Successful operation',
-    type: Pokemon,
-    isArray: true,
-  })
-  @Version('1')
-  findAllV1(): Promise<Pokemon[]> {
-    return this.pokemonService.findAllV1();
+  @SortQuery(PokemonSortingFields, 'Sort the pokemons')
+  @FindResponse('', [Pokemon], '1', 'Get all pokemons')
+  findAllV1(
+    @SortingParams(PokemonSortingFields) sort?: Sorting,
+  ): Promise<Pokemon[]> {
+    return this.pokemonService.findAllV1(sort);
   }
 
-  @Get(':id')
-  @ApiOperation({ summary: 'Get a pokemon by id' })
-  @ApiResponse({
-    status: 200,
-    description: 'Successful operation',
-    type: PokemonDetails,
-  })
-  @ApiResponse({ status: 404, description: 'Pokemon not found', type: Error })
-  @Version('1')
+  @FindOneResponse(':id', PokemonDetails, '1', 'Pokemon', 'Get a pokemon by id')
   findOneV1(@Param('id') id: number): Promise<PokemonDetails> {
     return this.pokemonService.findOneV1(id);
   }
 
-  @Get()
-  @ApiOperation({ summary: 'Get all pokemons paginated' })
-  @ApiResponse({
-    status: 200,
-    description: 'Successful operation',
-    type: Pokemon,
-    isArray: true,
-  })
-  @Version('2')
-  findAllV2(): Promise<Pokemon[]> {
+  @SortQuery(PokemonSortingFields, 'Sort the pokemons')
+  @FindResponse('', [Pokemon], '2', 'Get all pokemons paginated')
+  findAllV2(
+    @SortingParams(PokemonSortingFields) sort?: Sorting,
+  ): Promise<Pokemon[]> {
     // TODO: Add pagination
-    return this.pokemonService.findAllV2();
+    return this.pokemonService.findAllV2(sort);
   }
 }

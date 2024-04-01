@@ -5,8 +5,9 @@ import { DataSource } from 'typeorm';
 import { Seeder } from 'typeorm-extension';
 
 import { PokemonDetails } from '../../pokemon';
-import { JsonPokemonDetails } from '../../shared';
+import { JsonPokemonDetailsDto } from '../../shared';
 
+// noinspection JSUnusedGlobalSymbols
 export class PokemonDetailsSeeder implements Seeder {
   public async run(dataSource: DataSource): Promise<void> {
     // Reset column ID's to start back from 1.
@@ -21,10 +22,10 @@ export class PokemonDetailsSeeder implements Seeder {
 
     // Map raw data into JsonPokemonDetails class to first clean the data, then into PokemonDetails entity.
     const pokemonDetailsArray = plainToInstance(
-      JsonPokemonDetails,
+      JsonPokemonDetailsDto,
       JSON.parse(jsonData),
       { excludeExtraneousValues: true },
-    ) as unknown as JsonPokemonDetails[] as PokemonDetails[];
+    ) as unknown as JsonPokemonDetailsDto[] as PokemonDetails[];
 
     await repository.save(pokemonDetailsArray);
   }

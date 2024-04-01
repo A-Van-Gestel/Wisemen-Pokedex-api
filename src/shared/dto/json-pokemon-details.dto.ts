@@ -98,7 +98,7 @@ class Ability {
 /**
  * Mapped against pokeapi pokemon data.
  */
-export class JsonPokemonDetails {
+export class JsonPokemonDetailsDto {
   @Expose()
   id: number;
 

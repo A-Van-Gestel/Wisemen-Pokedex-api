@@ -1,1 +1,2 @@
-export * from './ToStringFromNameGroup.decorator';
+export * from './class-transformers';
+export * from './parameters';

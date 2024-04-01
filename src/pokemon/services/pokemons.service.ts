@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { getOrder, Sorting } from '../../shared';
 import { Pokemon, PokemonDetails } from '../entities';
 
 @Injectable()
@@ -13,8 +14,10 @@ export class PokemonsService {
     private readonly pokemonDetailsRepository: Repository<PokemonDetails>,
   ) {}
 
-  findAllV1(): Promise<Pokemon[]> {
-    return this.pokemonRepository.find();
+  findAllV1(sort: Sorting): Promise<Pokemon[]> {
+    return this.pokemonRepository.find({
+      order: getOrder(sort),
+    });
   }
 
   findOneV1(id: number): Promise<PokemonDetails> {
@@ -29,7 +32,9 @@ export class PokemonsService {
     });
   }
 
-  findAllV2(): Promise<Pokemon[]> {
-    return this.pokemonRepository.find();
+  findAllV2(sort: Sorting): Promise<Pokemon[]> {
+    return this.pokemonRepository.find({
+      order: getOrder(sort),
+    });
   }
 }

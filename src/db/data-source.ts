@@ -17,4 +17,5 @@ export const dataSourceOptions: DataSourceOptions & SeederOptions = {
 };
 
 // Used by typeorm-extension seed command
+// noinspection JSUnusedGlobalSymbols
 export const dataSource = new DataSource(dataSourceOptions);
