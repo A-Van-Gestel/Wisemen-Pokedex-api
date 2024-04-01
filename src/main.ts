@@ -17,6 +17,9 @@ async function bootstrap() {
     new ValidationPipe({
       exceptionFactory: (errors) => new UnprocessableEntityException(errors),
       transform: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
       whitelist: true,
     }),
   );
