@@ -1,13 +1,13 @@
 import { Controller, Param } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-
 import {
   FindOneResponse,
   FindResponse,
   Sorting,
   SortingParams,
   SortQuery,
-} from '../../shared';
+} from '@shared';
+
 import { Pokemon, PokemonDetails } from '../entities';
 import { PokemonSortingFields } from '../enums';
 import { PokemonsService } from '../services';

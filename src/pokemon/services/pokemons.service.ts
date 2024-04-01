@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { getOrder, Sorting } from '@shared';
 import { Repository } from 'typeorm';
 
-import { getOrder, Sorting } from '../../shared';
 import { Pokemon, PokemonDetails } from '../entities';
 
 @Injectable()

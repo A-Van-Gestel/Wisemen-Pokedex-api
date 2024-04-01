@@ -1,3 +1,4 @@
+import { JsonPokemonDetailsDto } from '@shared';
 import { plainToInstance } from 'class-transformer';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -5,7 +6,6 @@ import { DataSource } from 'typeorm';
 import { Seeder } from 'typeorm-extension';
 
 import { PokemonDetails } from '../../pokemon';
-import { JsonPokemonDetailsDto } from '../../shared';
 
 // noinspection JSUnusedGlobalSymbols
 export class PokemonDetailsSeeder implements Seeder {

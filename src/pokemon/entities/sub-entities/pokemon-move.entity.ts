@@ -1,6 +1,6 @@
+import { AbstractEntity } from '@shared';
 import { Column, Entity, OneToMany } from 'typeorm';
 
-import { AbstractEntity } from '../../../shared';
 import { MoveVersionGroupDetail } from './move-version-detail.entity';
 
 @Entity({ name: 'pokemon-move' })

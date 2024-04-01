@@ -9,6 +9,9 @@
     "target": "ES2021",
     "sourceMap": true,
     "outDir": "./dist",
+    "paths": {
+      "@shared": ["src/shared"],
+    },
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,

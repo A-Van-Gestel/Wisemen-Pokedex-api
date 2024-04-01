@@ -1,3 +1,4 @@
+import { AbstractEntity } from '@shared';
 import {
   ChildEntity,
   Column,
@@ -10,7 +11,6 @@ import {
   TableInheritance,
 } from 'typeorm';
 
-import { AbstractEntity } from '../../shared';
 import {
   PokemonAbility,
   PokemonMove,

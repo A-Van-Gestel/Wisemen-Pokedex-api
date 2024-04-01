@@ -1,6 +1,5 @@
+import { AbstractEntity } from '@shared';
 import { Column, Entity } from 'typeorm';
-
-import { AbstractEntity } from '../../../shared';
 
 @Entity({ name: 'sprite' })
 export class Sprite extends AbstractEntity<Sprite> {
