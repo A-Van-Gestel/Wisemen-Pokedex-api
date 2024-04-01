@@ -1,8 +1,7 @@
 import { Controller, Get, Param, Version } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-import { PokemonDetails } from '../entities';
-import { Pokemon } from '../models';
+import { Pokemon, PokemonDetails } from '../entities';
 import { PokemonsService } from '../services';
 
 @ApiTags('Pokemons')

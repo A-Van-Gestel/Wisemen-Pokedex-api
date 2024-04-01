@@ -2,18 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { PokemonDetails } from '../entities';
-import { Pokemon } from '../models';
+import { Pokemon, PokemonDetails } from '../entities';
 
 @Injectable()
 export class PokemonsService {
   constructor(
+    @InjectRepository(Pokemon)
+    private readonly pokemonRepository: Repository<Pokemon>,
     @InjectRepository(PokemonDetails)
     private readonly pokemonDetailsRepository: Repository<PokemonDetails>,
   ) {}
 
   findAllV1(): Promise<Pokemon[]> {
-    return this.pokemonDetailsRepository.find() as Promise<Pokemon[]>; // TODO: Update query to return actual only pokemon data
+    return this.pokemonRepository.find();
   }
 
   findOneV1(id: number): Promise<PokemonDetails> {
@@ -29,6 +30,6 @@ export class PokemonsService {
   }
 
   findAllV2(): Promise<Pokemon[]> {
-    return this.pokemonDetailsRepository.find() as Promise<Pokemon[]>; // TODO: Update query to return actual only pokemon data
+    return this.pokemonRepository.find();
   }
 }

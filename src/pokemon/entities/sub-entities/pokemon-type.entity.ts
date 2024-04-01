@@ -2,7 +2,7 @@ import { ApiHideProperty } from '@nestjs/swagger';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 import { AbstractEntity } from '../../../shared';
-import { PokemonDetails } from '../pokemon-details.entity';
+import { Pokemon } from '../pokemon.entity';
 
 @Entity({ name: 'pokemon-type' })
 export class PokemonType extends AbstractEntity<PokemonType> {
@@ -13,7 +13,7 @@ export class PokemonType extends AbstractEntity<PokemonType> {
   slot!: number;
 
   @ApiHideProperty()
-  @ManyToOne(() => PokemonDetails, (pokemon) => pokemon.types)
+  @ManyToOne(() => Pokemon, (pokemon) => pokemon.types)
   @JoinColumn()
-  pokemon?: PokemonDetails;
+  pokemon?: Pokemon;
 }

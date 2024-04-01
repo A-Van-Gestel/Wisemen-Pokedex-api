@@ -10,9 +10,7 @@ import { JsonPokemonDetails } from '../../shared';
 export class PokemonDetailsSeeder implements Seeder {
   public async run(dataSource: DataSource): Promise<void> {
     // Reset column ID's to start back from 1.
-    await dataSource.query(
-      'TRUNCATE "pokemon-details" RESTART IDENTITY CASCADE;',
-    );
+    await dataSource.query('TRUNCATE "pokemon" RESTART IDENTITY CASCADE;');
 
     // Get pokemonDetails repository.
     const repository = dataSource.getRepository(PokemonDetails);

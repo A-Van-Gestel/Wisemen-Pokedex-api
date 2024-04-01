@@ -2,7 +2,7 @@ import { ApiHideProperty } from '@nestjs/swagger';
 import { Column, Entity, ManyToOne } from 'typeorm';
 
 import { AbstractEntity } from '../../../shared';
-import { PokemonDetails } from '../pokemon-details.entity';
+import { PokemonDetails } from '../pokemon.entity';
 
 @Entity({ name: 'pokemon-ability' })
 export class PokemonAbility extends AbstractEntity<PokemonAbility> {

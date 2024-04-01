@@ -1,4 +1,5 @@
 import {
+  ChildEntity,
   Column,
   Entity,
   JoinColumn,
@@ -6,6 +7,7 @@ import {
   ManyToMany,
   OneToMany,
   OneToOne,
+  TableInheritance,
 } from 'typeorm';
 
 import { AbstractEntity } from '../../shared';
@@ -17,11 +19,28 @@ import {
   Sprite,
 } from './sub-entities';
 
-@Entity({ name: 'pokemon-details' })
-export class PokemonDetails extends AbstractEntity<PokemonDetails> {
+@Entity({ name: 'pokemon' })
+@TableInheritance({ column: { type: 'varchar', name: 'type' } })
+export class Pokemon extends AbstractEntity<Pokemon> {
   @Column({ type: 'text' })
   name!: string;
 
+  @OneToOne(() => Sprite, { eager: true, cascade: true })
+  @JoinColumn()
+  sprites?: {
+    front_default: string;
+  };
+
+  @OneToMany(() => PokemonType, (type) => type.pokemon, {
+    eager: true,
+    cascade: true,
+  })
+  types?: PokemonType[];
+}
+
+// In same file as Pokemon base entity to prevent circular dependencies.
+@ChildEntity()
+export class PokemonDetails extends Pokemon {
   @Column({ type: 'int' })
   height!: number;
 
@@ -40,9 +59,6 @@ export class PokemonDetails extends AbstractEntity<PokemonDetails> {
   @OneToOne(() => Sprite, { eager: true, cascade: true })
   @JoinColumn()
   sprites?: Sprite;
-
-  @OneToMany(() => PokemonType, (type) => type.pokemon, { cascade: true })
-  types?: PokemonType[];
 
   @ManyToMany(() => PokemonMove, { cascade: true })
   @JoinTable()
