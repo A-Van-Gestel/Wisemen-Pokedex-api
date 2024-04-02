@@ -21,7 +21,7 @@ export class PokemonsService {
   }
 
   findOneV1(id: bigint): Promise<PokemonDetails> {
-    return this.pokemonDetailsRepository.findOne({
+    return this.pokemonDetailsRepository.findOneOrFail({
       where: { id: id },
       relations: {
         types: true,
