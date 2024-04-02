@@ -27,7 +27,7 @@ export class SearchService {
 
     const results = await this.pokemonRepository.find({
       where: filters,
-      take: searchInputModel.limit,
+      take: Number(searchInputModel.limit),
     });
     return results.map((result) => instanceToInstance(new Pokemon(result)));
   }

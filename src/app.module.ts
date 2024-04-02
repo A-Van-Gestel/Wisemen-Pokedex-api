@@ -6,7 +6,7 @@ import { SearchModule } from './search';
 import { TeamsModule } from './teams';
 
 @Module({
-  imports: [DbModule, PokemonsModule, SearchModule, TeamsModule],
+  imports: [DbModule, PokemonsModule, TeamsModule, SearchModule],
   controllers: [],
   providers: [],
 })

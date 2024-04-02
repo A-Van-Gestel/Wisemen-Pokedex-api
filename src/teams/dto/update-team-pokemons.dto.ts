@@ -4,6 +4,6 @@ export class UpdateTeamPokemonsDto {
   @IsNotEmpty()
   @IsInt({ each: true })
   @ArrayMaxSize(6)
-  @Min(1, { each: true })
+  @Min(0, { each: true })
   public pokemons!: number[];
 }

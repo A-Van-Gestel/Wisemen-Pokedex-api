@@ -1,5 +1,5 @@
 import { Controller, Param } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 import {
   FindOneResponse,
   FindResponse,
@@ -25,8 +25,13 @@ export class PokemonsController {
     return this.pokemonService.findAllV1(sort);
   }
 
+  @ApiParam({
+    name: 'id',
+    description: 'The id of the pokemon to retrieve',
+    required: true,
+  })
   @FindOneResponse(':id', PokemonDetails, '1', 'Pokemon', 'Get a pokemon by id')
-  findOneV1(@Param('id') id: number): Promise<PokemonDetails> {
+  findOneV1(@Param('id') id: bigint): Promise<PokemonDetails> {
     return this.pokemonService.findOneV1(id);
   }
 

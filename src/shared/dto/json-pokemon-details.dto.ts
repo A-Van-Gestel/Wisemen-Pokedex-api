@@ -100,7 +100,7 @@ class Ability {
  */
 export class JsonPokemonDetailsDto {
   @Expose()
-  id: number;
+  id: bigint;
 
   @Expose()
   name: string;

@@ -24,12 +24,12 @@ export class TeamsService {
     return this.teamRepository.save(team);
   }
 
-  findOne(id: number): Promise<Team | null> {
+  findOne(id: bigint): Promise<Team | null> {
     return this.teamRepository.findOneByOrFail({ id: id });
   }
 
   async setPokemonsOfTeam(
-    id: number,
+    id: bigint,
     updateTeamPokemonsDto: UpdateTeamPokemonsDto,
   ): Promise<Team> {
     const team = await this.teamRepository.findOneByOrFail({

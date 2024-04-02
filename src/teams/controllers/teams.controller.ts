@@ -36,7 +36,7 @@ export class TeamsController {
     required: true,
   })
   @FindOneResponse(':id', Team, '1', 'Team', 'Get team by id')
-  findOne(@Param('id') id: number): Promise<Team | null> {
+  findOne(@Param('id') id: bigint): Promise<Team | null> {
     return this.teamService.findOne(id);
   }
 
@@ -51,7 +51,7 @@ export class TeamsController {
   })
   @UpdateResponse(':id', Team, '1', 'Team', 'Set Pokemons of a team')
   setPokemonsOfTeam(
-    @Param('id') id: number,
+    @Param('id') id: bigint,
     @Body() updateTeamPokemonsDto: UpdateTeamPokemonsDto,
   ): Promise<Team> {
     return this.teamService.setPokemonsOfTeam(id, updateTeamPokemonsDto);

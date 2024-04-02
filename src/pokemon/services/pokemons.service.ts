@@ -20,7 +20,7 @@ export class PokemonsService {
     });
   }
 
-  findOneV1(id: number): Promise<PokemonDetails> {
+  findOneV1(id: bigint): Promise<PokemonDetails> {
     return this.pokemonDetailsRepository.findOne({
       where: { id: id },
       relations: {
