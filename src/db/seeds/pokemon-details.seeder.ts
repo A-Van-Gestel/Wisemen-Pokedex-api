@@ -21,11 +21,11 @@ export class PokemonDetailsSeeder implements Seeder {
     const jsonData = fs.readFileSync(jsonPath, 'utf-8');
 
     // Map raw data into JsonPokemonDetails class to first clean the data, then into PokemonDetails entity.
-    const pokemonDetailsArray = plainToInstance(
-      JsonPokemonDetailsDto,
-      JSON.parse(jsonData),
-      { excludeExtraneousValues: true },
-    ) as unknown as JsonPokemonDetailsDto[] as PokemonDetails[];
+    const pokemonDetailsArray = (
+      plainToInstance(JsonPokemonDetailsDto, JSON.parse(jsonData), {
+        excludeExtraneousValues: true,
+      }) as unknown as JsonPokemonDetailsDto[]
+    ).map((jsonPokemonDetailsDto) => new PokemonDetails(jsonPokemonDetailsDto));
 
     await repository.save(pokemonDetailsArray);
   }

@@ -71,4 +71,9 @@ export class PokemonDetails extends Pokemon {
     cascade: true,
   })
   abilities?: PokemonAbility[];
+
+  constructor(entity: Partial<PokemonDetails>) {
+    super(entity);
+    Object.assign(this, entity);
+  }
 }
