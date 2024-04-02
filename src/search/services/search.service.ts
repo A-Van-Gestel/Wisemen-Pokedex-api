@@ -13,7 +13,9 @@ export class SearchService {
     private readonly pokemonRepository: Repository<Pokemon>,
   ) {}
 
-  public async search(searchInputModel: SearchInputModel): Promise<Pokemon[]> {
+  public async searchV1(
+    searchInputModel: SearchInputModel,
+  ): Promise<Pokemon[]> {
     const searchQuery = `%${searchInputModel.query}%`;
 
     const filters: Partial<Record<keyof Pokemon, any>>[] = [

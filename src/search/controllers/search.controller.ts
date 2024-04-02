@@ -12,7 +12,7 @@ export class SearchController {
   constructor(private readonly searchService: SearchService) {}
 
   @FindResponse('', [Pokemon], '1', 'Search for pokemons')
-  search(@Query() searchInputModel: SearchInputModel) {
-    return this.searchService.search(searchInputModel);
+  searchV1(@Query() searchInputModel: SearchInputModel) {
+    return this.searchService.searchV1(searchInputModel);
   }
 }

@@ -12,11 +12,11 @@ export class TeamsService {
     private readonly teamRepository: Repository<Team>,
   ) {}
 
-  findAll(): Promise<Team[]> {
+  findAllV1(): Promise<Team[]> {
     return this.teamRepository.find();
   }
 
-  create(createTeamDto: CreateTeamDto): Promise<Team> {
+  createV1(createTeamDto: CreateTeamDto): Promise<Team> {
     const team = this.teamRepository.create({
       ...createTeamDto,
       pokemons: [],
@@ -24,11 +24,11 @@ export class TeamsService {
     return this.teamRepository.save(team);
   }
 
-  findOne(id: bigint): Promise<Team | null> {
+  findOneV1(id: bigint): Promise<Team | null> {
     return this.teamRepository.findOneByOrFail({ id: id });
   }
 
-  async setPokemonsOfTeam(
+  async setPokemonsOfTeamV1(
     id: bigint,
     updateTeamPokemonsDto: UpdateTeamPokemonsDto,
   ): Promise<Team> {

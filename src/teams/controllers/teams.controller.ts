@@ -17,8 +17,8 @@ export class TeamsController {
   constructor(private readonly teamService: TeamsService) {}
 
   @FindResponse('', [Team], '1', 'Get all teams')
-  findAll(): Promise<Team[]> {
-    return this.teamService.findAll();
+  findAllV1(): Promise<Team[]> {
+    return this.teamService.findAllV1();
   }
 
   @ApiBody({
@@ -26,8 +26,8 @@ export class TeamsController {
     type: CreateTeamDto,
   })
   @CreateResponse('', Team, '1', 'Create a new team')
-  create(@Body() createTeamDto: CreateTeamDto): Promise<Team> {
-    return this.teamService.create(createTeamDto);
+  createV1(@Body() createTeamDto: CreateTeamDto): Promise<Team> {
+    return this.teamService.createV1(createTeamDto);
   }
 
   @ApiParam({
@@ -36,8 +36,8 @@ export class TeamsController {
     required: true,
   })
   @FindOneResponse(':id', Team, '1', 'Team', 'Get team by id')
-  findOne(@Param('id') id: bigint): Promise<Team | null> {
-    return this.teamService.findOne(id);
+  findOneV1(@Param('id') id: bigint): Promise<Team | null> {
+    return this.teamService.findOneV1(id);
   }
 
   @ApiBody({
@@ -50,10 +50,10 @@ export class TeamsController {
     required: true,
   })
   @UpdateResponse(':id', Team, '1', 'Team', 'Set Pokemons of a team')
-  setPokemonsOfTeam(
+  setPokemonsOfTeamV1(
     @Param('id') id: bigint,
     @Body() updateTeamPokemonsDto: UpdateTeamPokemonsDto,
   ): Promise<Team> {
-    return this.teamService.setPokemonsOfTeam(id, updateTeamPokemonsDto);
+    return this.teamService.setPokemonsOfTeamV1(id, updateTeamPokemonsDto);
   }
 }
