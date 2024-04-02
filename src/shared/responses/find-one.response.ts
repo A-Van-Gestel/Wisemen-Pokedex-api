@@ -5,6 +5,8 @@ import {
   ApiOperation,
 } from '@nestjs/swagger';
 
+import { Error } from '../models';
+
 export const FindOneResponse = <T extends Type>(
   path: string | string[],
   type: T,

@@ -12,6 +12,8 @@ import {
   ApiOperation,
 } from '@nestjs/swagger';
 
+import { Error } from '../models';
+
 export const UpdateResponse = <T extends Type>(
   path: string | string[],
   type: T,
