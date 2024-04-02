@@ -2,7 +2,12 @@ import { Controller, Param } from '@nestjs/common';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import {
   FindOneResponse,
+  FindPaginatedResponse,
   FindResponse,
+  PaginatedResourceOutputModel,
+  PaginateQuery,
+  Pagination,
+  PaginationParams,
   Sorting,
   SortingParams,
   SortQuery,
@@ -35,12 +40,13 @@ export class PokemonsController {
     return this.pokemonService.findOneV1(id);
   }
 
+  @PaginateQuery('pokemons')
   @SortQuery(PokemonSortingFields, 'Sort the pokemons')
-  @FindResponse('', [Pokemon], '2', 'Get all pokemons paginated')
+  @FindPaginatedResponse('', Pokemon, '2', 'Get all pokemons paginated')
   findAllV2(
     @SortingParams(PokemonSortingFields) sort?: Sorting,
-  ): Promise<Pokemon[]> {
-    // TODO: Add pagination
-    return this.pokemonService.findAllV2(sort);
+    @PaginationParams() pagination?: Pagination,
+  ): Promise<PaginatedResourceOutputModel<Pokemon>> {
+    return this.pokemonService.findAllV2(sort, pagination);
   }
 }

@@ -1,6 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { getOrder, Sorting } from '@shared';
+import {
+  getOrder,
+  getPaginationMetadata,
+  PaginatedResourceOutputModel,
+  Pagination,
+  Sorting,
+} from '@shared';
 import { Repository } from 'typeorm';
 
 import { Pokemon, PokemonDetails } from '../entities';
@@ -32,9 +38,21 @@ export class PokemonsService {
     });
   }
 
-  findAllV2(sort: Sorting): Promise<Pokemon[]> {
-    return this.pokemonRepository.find({
+  async findAllV2(
+    sort: Sorting,
+    { limit, offset, path }: Pagination,
+  ): Promise<PaginatedResourceOutputModel<Pokemon>> {
+    const [results, count] = await this.pokemonRepository.findAndCount({
       order: getOrder(sort),
+      take: limit,
+      skip: offset,
+    });
+
+    const metadata = getPaginationMetadata(limit, offset, count, path);
+
+    return new PaginatedResourceOutputModel<Pokemon>({
+      data: results,
+      metadata: metadata,
     });
   }
 }
