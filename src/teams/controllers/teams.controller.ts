@@ -1,5 +1,5 @@
 import { Body, Controller, Param } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
 import {
   CreateResponse,
   FindOneResponse,
@@ -7,7 +7,7 @@ import {
   UpdateResponse,
 } from '@shared';
 
-import { CreateTeamDto, UpdateTeamDto } from '../dto';
+import { CreateTeamDto, UpdateTeamPokemonsDto } from '../dto';
 import { Team } from '../entities';
 import { TeamsService } from '../services';
 
@@ -17,25 +17,43 @@ export class TeamsController {
   constructor(private readonly teamService: TeamsService) {}
 
   @FindResponse('', [Team], '1', 'Get all teams')
-  findAll() {
+  findAll(): Promise<Team[]> {
     return this.teamService.findAll();
   }
 
+  @ApiBody({
+    description: 'Team to create',
+    type: CreateTeamDto,
+  })
   @CreateResponse('', Team, '1', 'Create a new team')
-  create(@Body() createTeamDto: CreateTeamDto) {
+  create(@Body() createTeamDto: CreateTeamDto): Promise<Team> {
     return this.teamService.create(createTeamDto);
   }
 
+  @ApiParam({
+    name: 'id',
+    description: 'The id of the team to retrieve',
+    required: true,
+  })
   @FindOneResponse(':id', Team, '1', 'Team', 'Get team by id')
-  findOne(@Param('id') id: number) {
+  findOne(@Param('id') id: number): Promise<Team | null> {
     return this.teamService.findOne(id);
   }
 
+  @ApiBody({
+    description: "Array of Pokemon id's to set",
+    type: UpdateTeamPokemonsDto,
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'The id of the team to set pokemons',
+    required: true,
+  })
   @UpdateResponse(':id', Team, '1', 'Team', 'Set Pokemons of a team')
   setPokemonsOfTeam(
     @Param('id') id: number,
-    @Body() updateTeamDto: UpdateTeamDto,
-  ) {
-    return this.teamService.setPokemonsOfTeam(id, updateTeamDto);
+    @Body() updateTeamPokemonsDto: UpdateTeamPokemonsDto,
+  ): Promise<Team> {
+    return this.teamService.setPokemonsOfTeam(id, updateTeamPokemonsDto);
   }
 }
