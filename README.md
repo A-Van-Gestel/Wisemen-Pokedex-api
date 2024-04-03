@@ -43,6 +43,10 @@ Copy `.env.example` to `.env` and configure the variables.
 $ docker compose --env-file .\.env up -d
 ```
 
+Run migrations (see [Migrations](#migrations))
+
+Seed with data (see [Seeding](#seeding))
+
 
 ## Commands
 
@@ -72,7 +76,7 @@ $ npm run migration:run
 $ npm run migration:revert
 ```
 
-### Seed with initial data
+### Seeding
 
 ```bash
 # seed

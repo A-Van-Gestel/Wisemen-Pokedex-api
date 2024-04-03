@@ -16,9 +16,9 @@ export const dataSourceOptions: DataSourceOptions & SeederOptions = {
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
-  entities: [path.join(getEntitiesRootFolder(), '/**/**.entity.{ts,js}')],
+  entities: [path.join(getEntitiesRootFolder(), '/**/*.entity.{ts,js}')],
   seeds: ['dist/db/seeds/**/*.seeder.js'],
-  migrations: ['Migrations/**'],
+  migrations: ['dist/db/migrations/**'],
   synchronize: false,
 };
 
