@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {
   getOrder,
   getPaginationMetadata,
+  JsonPokemonDetailsDto,
   PaginatedResourceOutputModel,
   Pagination,
   Sorting,
@@ -54,5 +55,14 @@ export class PokemonsService {
       data: results,
       metadata: metadata,
     });
+  }
+
+  importPokemonV1(
+    jsonPokemonDetailsDto: JsonPokemonDetailsDto,
+  ): Promise<PokemonDetails> {
+    const importedPokemonDetails = this.pokemonDetailsRepository.create(
+      jsonPokemonDetailsDto,
+    );
+    return this.pokemonDetailsRepository.save(importedPokemonDetails);
   }
 }

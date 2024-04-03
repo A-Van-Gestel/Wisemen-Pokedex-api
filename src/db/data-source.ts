@@ -11,7 +11,7 @@ export const dataSourceOptions: DataSourceOptions & SeederOptions = {
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
-  entities: ['dist/**/*.entity.js'],
+  entities: [`${process.env.ENTITIES_PATH}/**/*.entity.{ts,js}`],
   seeds: ['dist/db/seeds/**/*.seeder.js'],
   synchronize: true, // TODO: Only for development, should be set to false in production
 };
