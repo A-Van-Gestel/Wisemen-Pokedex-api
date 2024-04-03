@@ -18,6 +18,10 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
+    "typeorm": "ts-node node_modules/typeorm/cli.js -d src/db/data-source.ts",
+    "migration:generate": "npm run build && cross-replace npm run typeorm migration:generate ./Migrations/$npm_config_name",
+    "migration:run": "npm run build && npm run typeorm migration:run",
+    "migration:revert": "npm run build && npm run typeorm migration:revert",
     "seed": "npm run build && ts-node ./node_modules/typeorm-extension/bin/cli.cjs seed:run -d src/db/data-source.ts",
     "import:pokemon": "cross-env ENTITIES_PATH_ROOT_OVERRIDE=src nestjs-command import:pokemon"
   },
@@ -53,6 +57,7 @@
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "cross-env": "^7.0.3",
+    "cross-replace": "^0.2.0",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-import-resolver-typescript": "^3.6.1",

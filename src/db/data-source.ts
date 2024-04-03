@@ -18,7 +18,8 @@ export const dataSourceOptions: DataSourceOptions & SeederOptions = {
   database: process.env.POSTGRES_DB,
   entities: [path.join(getEntitiesRootFolder(), '/**/**.entity.{ts,js}')],
   seeds: ['dist/db/seeds/**/*.seeder.js'],
-  synchronize: true, // TODO: Only for development, should be set to false in production
+  migrations: ['Migrations/**'],
+  synchronize: false,
 };
 
 // Used by typeorm-extension seed command
