@@ -83,7 +83,9 @@ $ npm run seed
 
 ```bash
 # import pokemon by name or id
-$ npm run import pokemon NameOrID
+$ npm run import:pokemon NameOrID
+    - # example: $ npm run import:pokemon 1
+    - # example: $ npm run import:pokemon bulbasaur
 ```
 
 ### Test
