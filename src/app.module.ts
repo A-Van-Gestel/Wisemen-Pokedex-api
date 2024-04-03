@@ -5,6 +5,7 @@ import { DbModule } from './db';
 import { PokemonsModule } from './pokemon';
 import { SearchModule } from './search';
 import { TeamsModule } from './teams';
+import { UsersModule } from './users';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { TeamsModule } from './teams';
     PokemonsModule,
     TeamsModule,
     SearchModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [],
