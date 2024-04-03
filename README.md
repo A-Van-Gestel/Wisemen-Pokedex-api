@@ -32,7 +32,21 @@
 $ npm install
 ```
 
-## Running the app
+### Environment setup
+
+Copy `.env.example` to `.env` and configure the variables.
+
+### Setup database
+
+```bash
+# docker
+$ docker compose --env-file .\.env up -d
+```
+
+
+## Commands
+
+### Running the app
 
 ```bash
 # development
@@ -45,7 +59,34 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Test
+### Migrations
+
+```bash
+# generate
+$ npm run migration:generate --name=name
+
+# run
+$ npm run migration:run
+
+# revert
+$ npm run migration:revert
+```
+
+### Seed with initial data
+
+```bash
+# seed
+$ npm run seed
+```
+
+### Import pokemon from pokeapi
+
+```bash
+# import pokemon by name or id
+$ npm run import pokemon NameOrID
+```
+
+### Test
 
 ```bash
 # unit tests
