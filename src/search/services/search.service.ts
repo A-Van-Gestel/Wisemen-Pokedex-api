@@ -29,7 +29,7 @@ export class SearchService {
 
     const results = await this.pokemonRepository.find({
       where: filters,
-      take: Number(searchInputModel.limit),
+      take: searchInputModel.limit || 0, // defaults to 0 (take all)
     });
     return plainToInstance(PokemonOutputDto, results);
   }
