@@ -8,8 +8,10 @@ import {
   Pagination,
   Sorting,
 } from '@shared';
+import { plainToInstance } from 'class-transformer';
 import { Repository } from 'typeorm';
 
+import { PokemonDetailsOutputDto, PokemonOutputDto } from '../dto';
 import { Pokemon, PokemonDetails } from '../entities';
 
 @Injectable()
@@ -21,14 +23,16 @@ export class PokemonsService {
     private readonly pokemonDetailsRepository: Repository<PokemonDetails>,
   ) {}
 
-  findAllV1(sort: Sorting): Promise<Pokemon[]> {
-    return this.pokemonRepository.find({
+  async findAllV1(sort: Sorting): Promise<PokemonOutputDto[]> {
+    const results = await this.pokemonRepository.find({
       order: getOrder(sort),
     });
+
+    return plainToInstance(PokemonOutputDto, results);
   }
 
-  findOneV1(id: bigint): Promise<PokemonDetails> {
-    return this.pokemonDetailsRepository.findOneOrFail({
+  async findOneV1(id: bigint): Promise<PokemonDetailsOutputDto> {
+    const results = await this.pokemonDetailsRepository.findOneOrFail({
       where: { id: id },
       relations: {
         types: true,
@@ -37,12 +41,14 @@ export class PokemonsService {
         abilities: true,
       },
     });
+
+    return plainToInstance(PokemonDetailsOutputDto, results);
   }
 
   async findAllV2(
     sort: Sorting,
     { limit, offset, path }: Pagination,
-  ): Promise<PaginatedResourceOutputModel<Pokemon>> {
+  ): Promise<PaginatedResourceOutputModel<PokemonOutputDto>> {
     const [results, count] = await this.pokemonRepository.findAndCount({
       order: getOrder(sort),
       take: limit,
@@ -51,8 +57,8 @@ export class PokemonsService {
 
     const metadata = getPaginationMetadata(limit, offset, count, path);
 
-    return new PaginatedResourceOutputModel<Pokemon>({
-      data: results,
+    return new PaginatedResourceOutputModel<PokemonOutputDto>({
+      data: plainToInstance(PokemonOutputDto, results),
       metadata: metadata,
     });
   }

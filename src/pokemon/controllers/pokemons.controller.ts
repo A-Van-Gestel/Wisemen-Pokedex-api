@@ -13,7 +13,7 @@ import {
   SortQuery,
 } from '@shared';
 
-import { Pokemon, PokemonDetails } from '../entities';
+import { PokemonDetailsOutputDto, PokemonOutputDto } from '../dto';
 import { PokemonSortingFields } from '../enums';
 import { PokemonsService } from '../services';
 
@@ -23,10 +23,10 @@ export class PokemonsController {
   constructor(private readonly pokemonService: PokemonsService) {}
 
   @SortQuery(PokemonSortingFields, 'Sort the pokemons')
-  @FindResponse('', [Pokemon], '1', 'Get all pokemons')
+  @FindResponse('', [PokemonOutputDto], '1', 'Get all pokemons')
   findAllV1(
     @SortingParams(PokemonSortingFields) sort?: Sorting,
-  ): Promise<Pokemon[]> {
+  ): Promise<PokemonOutputDto[]> {
     return this.pokemonService.findAllV1(sort);
   }
 
@@ -35,18 +35,29 @@ export class PokemonsController {
     description: 'The id of the pokemon to retrieve',
     required: true,
   })
-  @FindOneResponse(':id', PokemonDetails, '1', 'Pokemon', 'Get a pokemon by id')
-  findOneV1(@Param('id') id: bigint): Promise<PokemonDetails> {
+  @FindOneResponse(
+    ':id',
+    PokemonDetailsOutputDto,
+    '1',
+    'Pokemon',
+    'Get a pokemon by id',
+  )
+  findOneV1(@Param('id') id: bigint): Promise<PokemonDetailsOutputDto> {
     return this.pokemonService.findOneV1(id);
   }
 
   @PaginateQuery('pokemons')
   @SortQuery(PokemonSortingFields, 'Sort the pokemons')
-  @FindPaginatedResponse('', Pokemon, '2', 'Get all pokemons paginated')
+  @FindPaginatedResponse(
+    '',
+    PokemonOutputDto,
+    '2',
+    'Get all pokemons paginated',
+  )
   findAllV2(
     @SortingParams(PokemonSortingFields) sort?: Sorting,
     @PaginationParams() pagination?: Pagination,
-  ): Promise<PaginatedResourceOutputModel<Pokemon>> {
+  ): Promise<PaginatedResourceOutputModel<PokemonOutputDto>> {
     return this.pokemonService.findAllV2(sort, pagination);
   }
 }
