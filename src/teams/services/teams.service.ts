@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Error } from '@shared';
 import { plainToInstance } from 'class-transformer';
 import { Repository } from 'typeorm';
 
@@ -33,7 +34,16 @@ export class TeamsService {
   }
 
   async findOneV1(id: bigint): Promise<TeamOutputDto | null> {
-    const result = await this.teamRepository.findOneByOrFail({ id: id });
+    const result = await this.teamRepository.findOneBy({ id: id });
+
+    if (result == null)
+      throw new NotFoundException(
+        new Error({
+          error: 'Team not found',
+          error_message: `No team found with id: ${id}`,
+        }),
+      );
+
     return plainToInstance(TeamOutputDto, result);
   }
 
@@ -41,9 +51,18 @@ export class TeamsService {
     id: bigint,
     updateTeamPokemonsDto: UpdateTeamPokemonsInputDto,
   ): Promise<TeamOutputDto> {
-    const team = await this.teamRepository.findOneByOrFail({
+    const team = await this.teamRepository.findOneBy({
       id: id,
     });
+
+    if (team == null)
+      throw new NotFoundException(
+        new Error({
+          error: 'Team not found',
+          error_message: `No team found with id: ${id}`,
+        }),
+      );
+
     team.pokemons = updateTeamPokemonsDto.pokemons;
 
     const teamPersistent = await this.teamRepository.save(team);
