@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
+  Error,
   getOrder,
   getPaginationMetadata,
   JsonPokemonDetailsDto,
@@ -32,7 +33,7 @@ export class PokemonsService {
   }
 
   async findOneV1(id: bigint): Promise<PokemonDetailsOutputDto> {
-    const results = await this.pokemonDetailsRepository.findOneOrFail({
+    const result = await this.pokemonDetailsRepository.findOne({
       where: { id: id },
       relations: {
         types: true,
@@ -42,7 +43,15 @@ export class PokemonsService {
       },
     });
 
-    return plainToInstance(PokemonDetailsOutputDto, results);
+    if (result == null)
+      throw new NotFoundException(
+        new Error({
+          error: 'Pokemon not found',
+          error_message: `No pokemon found with id: ${id}`,
+        }),
+      );
+
+    return plainToInstance(PokemonDetailsOutputDto, result);
   }
 
   async findAllV2(
