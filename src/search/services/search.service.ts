@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { instanceToInstance } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { ILike, Repository } from 'typeorm';
 
-import { Pokemon } from '../../pokemon';
+import { Pokemon, PokemonOutputDto } from '../../pokemon';
 import { SearchInputModel } from '../models';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class SearchService {
 
   public async searchV1(
     searchInputModel: SearchInputModel,
-  ): Promise<Pokemon[]> {
+  ): Promise<PokemonOutputDto[]> {
     const searchQuery = `%${searchInputModel.query}%`;
 
     const filters: Partial<Record<keyof Pokemon, any>>[] = [
@@ -31,6 +31,6 @@ export class SearchService {
       where: filters,
       take: Number(searchInputModel.limit),
     });
-    return results.map((result) => instanceToInstance(new Pokemon(result)));
+    return plainToInstance(PokemonOutputDto, results);
   }
 }
