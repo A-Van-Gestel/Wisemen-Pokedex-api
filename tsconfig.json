@@ -10,7 +10,7 @@
     "sourceMap": true,
     "outDir": "./dist",
     "paths": {
-      "@shared": ["src/shared"],
+      "@shared": ["src/shared"]
     },
     "baseUrl": "./",
     "incremental": true,
