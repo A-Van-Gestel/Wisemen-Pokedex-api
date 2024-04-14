@@ -70,10 +70,9 @@ class Move {
 }
 
 class Stat {
-  @Expose({ name: 'stat' })
   @Type(() => NameGroup)
   @ToStringFromNameGroup()
-  stat_name: string;
+  stat: string;
 
   @Expose()
   base_stat: number;

@@ -1,8 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Error } from '@shared';
+import { plainToInstance } from 'class-transformer';
 import { Repository } from 'typeorm';
 
-import { CreateTeamDto, UpdateTeamPokemonsDto } from '../dto';
+import {
+  CreateTeamInputDto,
+  TeamOutputDto,
+  UpdateTeamPokemonsInputDto,
+} from '../dto';
 import { Team } from '../entities';
 
 @Injectable()
@@ -12,30 +18,54 @@ export class TeamsService {
     private readonly teamRepository: Repository<Team>,
   ) {}
 
-  findAllV1(): Promise<Team[]> {
-    return this.teamRepository.find();
+  async findAllV1(): Promise<TeamOutputDto[]> {
+    const results = await this.teamRepository.find();
+    return plainToInstance(TeamOutputDto, results);
   }
 
-  createV1(createTeamDto: CreateTeamDto): Promise<Team> {
+  async createV1(createTeamDto: CreateTeamInputDto): Promise<TeamOutputDto> {
     const team = this.teamRepository.create({
       ...createTeamDto,
       pokemons: [],
     });
-    return this.teamRepository.save(team);
+
+    const teamPersistent = await this.teamRepository.save(team);
+    return plainToInstance(TeamOutputDto, teamPersistent);
   }
 
-  findOneV1(id: bigint): Promise<Team | null> {
-    return this.teamRepository.findOneByOrFail({ id: id });
+  async findOneV1(id: bigint): Promise<TeamOutputDto | null> {
+    const result = await this.teamRepository.findOneBy({ id: id });
+
+    if (result == null)
+      throw new NotFoundException(
+        new Error({
+          error: 'Team not found',
+          error_message: `No team found with id: ${id}`,
+        }),
+      );
+
+    return plainToInstance(TeamOutputDto, result);
   }
 
   async setPokemonsOfTeamV1(
     id: bigint,
-    updateTeamPokemonsDto: UpdateTeamPokemonsDto,
-  ): Promise<Team> {
-    const team = await this.teamRepository.findOneByOrFail({
+    updateTeamPokemonsDto: UpdateTeamPokemonsInputDto,
+  ): Promise<TeamOutputDto> {
+    const team = await this.teamRepository.findOneBy({
       id: id,
     });
+
+    if (team == null)
+      throw new NotFoundException(
+        new Error({
+          error: 'Team not found',
+          error_message: `No team found with id: ${id}`,
+        }),
+      );
+
     team.pokemons = updateTeamPokemonsDto.pokemons;
-    return this.teamRepository.save(team);
+
+    const teamPersistent = await this.teamRepository.save(team);
+    return plainToInstance(TeamOutputDto, teamPersistent);
   }
 }

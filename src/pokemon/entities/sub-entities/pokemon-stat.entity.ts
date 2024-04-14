@@ -7,7 +7,7 @@ import { PokemonDetails } from '../pokemon.entity';
 @Entity({ name: 'pokemon-stat' })
 export class PokemonStat extends AbstractEntity<PokemonStat> {
   @Column({ type: 'text' })
-  stat_name!: string;
+  stat!: string;
 
   @Column({ type: 'int' })
   base_stat!: number;

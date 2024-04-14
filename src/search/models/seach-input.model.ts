@@ -10,7 +10,7 @@ export class SearchInputModel {
   @IsOptional()
   @IsPositive()
   @ApiPropertyOptional({ description: 'Limit the number of results' })
-  public limit?: bigint;
+  public limit?: number;
 
   constructor(object: Partial<SearchInputModel>) {
     Object.assign(this, object);

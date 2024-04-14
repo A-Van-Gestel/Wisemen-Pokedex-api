@@ -2,7 +2,7 @@ import { Controller, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { FindResponse } from '@shared';
 
-import { Pokemon } from '../../pokemon';
+import { PokemonOutputDto } from '../../pokemon';
 import { SearchInputModel } from '../models';
 import { SearchService } from '../services';
 
@@ -11,8 +11,10 @@ import { SearchService } from '../services';
 export class SearchController {
   constructor(private readonly searchService: SearchService) {}
 
-  @FindResponse('', [Pokemon], '1', 'Search for pokemons')
-  searchV1(@Query() searchInputModel: SearchInputModel) {
+  @FindResponse('', [PokemonOutputDto], '1', 'Search for pokemons')
+  searchV1(
+    @Query() searchInputModel: SearchInputModel,
+  ): Promise<PokemonOutputDto[]> {
     return this.searchService.searchV1(searchInputModel);
   }
 }

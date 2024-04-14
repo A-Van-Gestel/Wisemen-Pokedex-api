@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
+  Error,
   getOrder,
   getPaginationMetadata,
   JsonPokemonDetailsDto,
@@ -8,8 +9,10 @@ import {
   Pagination,
   Sorting,
 } from '@shared';
+import { plainToInstance } from 'class-transformer';
 import { Repository } from 'typeorm';
 
+import { PokemonDetailsOutputDto, PokemonOutputDto } from '../dto';
 import { Pokemon, PokemonDetails } from '../entities';
 
 @Injectable()
@@ -21,14 +24,16 @@ export class PokemonsService {
     private readonly pokemonDetailsRepository: Repository<PokemonDetails>,
   ) {}
 
-  findAllV1(sort: Sorting): Promise<Pokemon[]> {
-    return this.pokemonRepository.find({
+  async findAllV1(sort: Sorting): Promise<PokemonOutputDto[]> {
+    const results = await this.pokemonRepository.find({
       order: getOrder(sort),
     });
+
+    return plainToInstance(PokemonOutputDto, results);
   }
 
-  findOneV1(id: bigint): Promise<PokemonDetails> {
-    return this.pokemonDetailsRepository.findOneOrFail({
+  async findOneV1(id: bigint): Promise<PokemonDetailsOutputDto> {
+    const result = await this.pokemonDetailsRepository.findOne({
       where: { id: id },
       relations: {
         types: true,
@@ -37,12 +42,22 @@ export class PokemonsService {
         abilities: true,
       },
     });
+
+    if (result == null)
+      throw new NotFoundException(
+        new Error({
+          error: 'Pokemon not found',
+          error_message: `No pokemon found with id: ${id}`,
+        }),
+      );
+
+    return plainToInstance(PokemonDetailsOutputDto, result);
   }
 
   async findAllV2(
     sort: Sorting,
     { limit, offset, path }: Pagination,
-  ): Promise<PaginatedResourceOutputModel<Pokemon>> {
+  ): Promise<PaginatedResourceOutputModel<PokemonOutputDto>> {
     const [results, count] = await this.pokemonRepository.findAndCount({
       order: getOrder(sort),
       take: limit,
@@ -51,8 +66,8 @@ export class PokemonsService {
 
     const metadata = getPaginationMetadata(limit, offset, count, path);
 
-    return new PaginatedResourceOutputModel<Pokemon>({
-      data: results,
+    return new PaginatedResourceOutputModel<PokemonOutputDto>({
+      data: plainToInstance(PokemonOutputDto, results),
       metadata: metadata,
     });
   }

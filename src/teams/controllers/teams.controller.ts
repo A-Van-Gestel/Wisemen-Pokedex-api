@@ -7,8 +7,11 @@ import {
   UpdateResponse,
 } from '@shared';
 
-import { CreateTeamDto, UpdateTeamPokemonsDto } from '../dto';
-import { Team } from '../entities';
+import {
+  CreateTeamInputDto,
+  TeamOutputDto,
+  UpdateTeamPokemonsInputDto,
+} from '../dto';
 import { TeamsService } from '../services';
 
 @ApiTags('Teams')
@@ -16,17 +19,17 @@ import { TeamsService } from '../services';
 export class TeamsController {
   constructor(private readonly teamService: TeamsService) {}
 
-  @FindResponse('', [Team], '1', 'Get all teams')
-  findAllV1(): Promise<Team[]> {
+  @FindResponse('', [TeamOutputDto], '1', 'Get all teams')
+  findAllV1(): Promise<TeamOutputDto[]> {
     return this.teamService.findAllV1();
   }
 
   @ApiBody({
     description: 'Team to create',
-    type: CreateTeamDto,
+    type: CreateTeamInputDto,
   })
-  @CreateResponse('', Team, '1', 'Create a new team')
-  createV1(@Body() createTeamDto: CreateTeamDto): Promise<Team> {
+  @CreateResponse('', TeamOutputDto, '1', 'Create a new team')
+  createV1(@Body() createTeamDto: CreateTeamInputDto): Promise<TeamOutputDto> {
     return this.teamService.createV1(createTeamDto);
   }
 
@@ -35,25 +38,25 @@ export class TeamsController {
     description: 'The id of the team to retrieve',
     required: true,
   })
-  @FindOneResponse(':id', Team, '1', 'Team', 'Get team by id')
-  findOneV1(@Param('id') id: bigint): Promise<Team | null> {
+  @FindOneResponse(':id', TeamOutputDto, '1', 'Team', 'Get team by id')
+  findOneV1(@Param('id') id: bigint): Promise<TeamOutputDto | null> {
     return this.teamService.findOneV1(id);
   }
 
   @ApiBody({
     description: "Array of Pokemon id's to set",
-    type: UpdateTeamPokemonsDto,
+    type: UpdateTeamPokemonsInputDto,
   })
   @ApiParam({
     name: 'id',
     description: 'The id of the team to set pokemons',
     required: true,
   })
-  @UpdateResponse(':id', Team, '1', 'Team', 'Set Pokemons of a team')
+  @UpdateResponse(':id', TeamOutputDto, '1', 'Team', 'Set Pokemons of a team')
   setPokemonsOfTeamV1(
     @Param('id') id: bigint,
-    @Body() updateTeamPokemonsDto: UpdateTeamPokemonsDto,
-  ): Promise<Team> {
+    @Body() updateTeamPokemonsDto: UpdateTeamPokemonsInputDto,
+  ): Promise<TeamOutputDto> {
     return this.teamService.setPokemonsOfTeamV1(id, updateTeamPokemonsDto);
   }
 }

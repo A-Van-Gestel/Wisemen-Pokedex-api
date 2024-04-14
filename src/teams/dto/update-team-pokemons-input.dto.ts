@@ -1,6 +1,6 @@
 import { ArrayMaxSize, IsInt, IsNotEmpty, Min } from 'class-validator';
 
-export class UpdateTeamPokemonsDto {
+export class UpdateTeamPokemonsInputDto {
   @IsNotEmpty()
   @IsInt({ each: true })
   @ArrayMaxSize(6)
